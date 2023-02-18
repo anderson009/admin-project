@@ -18,7 +18,7 @@ const Layout = () => {
         <Navbar />
       </div>
 
-      <div className='flex flex-col w-full max-w-screen-xl min-h-screen m-auto pt-[100px]'>
+      <div className='flex flex-col w-full  min-h-screen mx-14  pt-[100px]'>
         <Outlet />
       </div>
     </div>

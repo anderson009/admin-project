@@ -24,6 +24,14 @@ const Dashboard = React.lazy(
       default: m.Dashboard,
     }))
 );
+
+const Movements = React.lazy(
+  async () =>
+    await import("./pages/movements/Movements").then((m) => ({
+      default: m.Movements,
+    }))
+);
+
 // const Users = React.lazy(
 //   async () =>
 //     await import("./pages/users/Users").then((m) => ({ default: m.Users }))
@@ -180,34 +188,18 @@ const RouterApps = (): JSX.Element => {
           }
         />
 
-        {/* <Route
-          path="users"
+        <Route
+          path="movements"
           element={
             <React.Suspense fallback={<></>}>
-              <Users />
+              <Movements />
             </React.Suspense>
           }
         >
-          <Route
-            path=":id/view"
-            element={
-              <React.Suspense fallback={<></>}>
-                <ViewUsers />
-              </React.Suspense>
-            }
-          />
-
-          <Route
-            path=":id/addToken"
-            element={
-              <React.Suspense fallback={<></>}>
-                <AddToken />
-              </React.Suspense>
-            }
-          />
+         
         </Route>
 
-        <Route
+        {/* <Route
           path="characters"
           element={
             <React.Suspense fallback={<></>}>
