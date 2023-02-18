@@ -1,0 +1,16 @@
+.nav-bar-root {
+    .MuiTypography-root {
+        color: rgba(7, 11, 12, 0.87);
+    }
+    .MuiListItemIcon-root {
+        color: rgba(10, 14, 55, 0.87);
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        margin-right: 12px;
+    }
+    .MuiListItemButton-root {
+        height: 50px;
+        box-sizing: border-box;
+    }
+}
