@@ -3,6 +3,14 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { Card } from "@mui/material";
+import { DynamicTable, TableConfigCells } from "./dinamyc-table";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getMovements } from "../store/slices/movements/Thunks";
+import { useAppDispatch, useAppSelector } from "../shared/hooks";
+import { headerCells } from "../pages/movements/utils/HeaderTable";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -22,7 +30,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3, width: 300, minWidth: 300 }}>
+        <Box sx={{ p: 3, width: "100%", minWidth: "100%" }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -39,6 +47,29 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
+  const [dataHeaders, setdataHeaders] = React.useState<TableConfigCells[]>([]);
+
+  const { movements, page, isLoading } = useAppSelector(
+    (state) => state.movements
+  );
+
+  console.log(movements, isLoading);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+     setdataHeaders(headerCells(actionsTable));
+  }, []);
+
+  const actionsTable = (): JSX.Element => {
+    return (
+      <TrendingUpIcon />
+    );
+  };
+
+  useEffect(() => {
+    dispatch(getMovements());
+  }, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -46,45 +77,62 @@ export default function BasicTabs() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box
+        sx={{
+          maxWidth: "100%",
+          borderBottom: 1,
+          borderColor: "divider",
+        }}
+      >
         <Tabs
+          sx={{ maxWidth: "100%" }}
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
           <Tab
-          sx={{ paddingX: 27 }}
-            
-            className="hover:bg-slate-200  w-6/12 "
-            label="Item One"
+            sx={{ maxWidth: "25%" }}
+            className="hover:bg-slate-200  w-6/12"
+            label="Ingresos"
             {...a11yProps(0)}
           />
           <Tab
-          sx={{ paddingX: 27 }}
-            
+            sx={{ maxWidth: "25%" }}
             className="hover:bg-slate-200  w-6/12 "
-            label="Item Two"
+            label="Egresos"
             {...a11yProps(1)}
           />
 
           <Tab
-          sx={{ paddingX: 27 }}
-            
+            sx={{ maxWidth: "25%" }}
             className="hover:bg-slate-200  w-6/12 "
-            label="Item One"
-            {...a11yProps(0)}
+            label="Por cobrar"
+            {...a11yProps(2)}
           />
           <Tab
-          sx={{ paddingX: 27 }}
-            
+            sx={{ maxWidth: "25%" }}
             className="hover:bg-slate-200  w-6/12"
-            label="Item Two"
-            {...a11yProps(1)}
+            label="Por pagar"
+            {...a11yProps(3)}
           />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Item Onessssssssssssssssssssssssssssssssssssssssssssssssssssssss
+        <Card className="w-full bg-white ">
+          <DynamicTable
+            //  loading={loading}
+            headerCells={dataHeaders}
+            data={movements}
+            // orderBy={orderBy}
+            //orderField={orderField}
+            page={page}
+            //total={totalUsers}
+            //rowsPerPage={rowsPerPage}
+            //onSortChange={onSortChange}
+            //onPageChange={onPageChange}
+            //onRowsPerPageChange={onRowsPerPageChange}
+          />
+        </Card>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two

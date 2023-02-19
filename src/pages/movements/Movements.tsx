@@ -22,7 +22,6 @@ import styled from "@emotion/styled";
 import Tab from "../../components/Tab";
 
 const Movements = () => {
-
   const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))({
@@ -151,10 +150,7 @@ const Movements = () => {
         </div>
       </div>
 
-<div className="w-full">
-<Tab />
-</div>
-    
+      <Tab />
     </div>
   );
 };
