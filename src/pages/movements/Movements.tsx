@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import {
   CardContent,
@@ -20,8 +20,22 @@ import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import styled from "@emotion/styled";
 import Tab from "../../components/Tab";
+import useChangeSearch from "../../hooks/useChangeSearch";
+import useFilter from "../../hooks/useFilter";
 
 const Movements = () => {
+
+  const [valueFilter, setValueFilter] = useState<any>({});
+
+  const changeValue = (key: string, value: any) => {
+    setValueFilter({ ...valueFilter, [key]: value });
+  };
+
+
+  const { textSearch, onChangeSearch } = useChangeSearch();
+
+  const { filters, onChangeFilter } = useFilter();
+
   const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))({
@@ -39,11 +53,12 @@ const Movements = () => {
           <FormControl sx={{ minWidth: 220, marginRight: 3 }} size="small">
             <InputLabel id="demo-simple-select-label">Age</InputLabel>
             <Select
+              onChange={(e: any) => onChangeFilter({type: e.target.value})}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Age"
             >
-              <MenuItem value={10}>Dario</MenuItem>
+              <MenuItem value={'ventas'}>Ventas</MenuItem>
               <MenuItem value={20}>Semanal</MenuItem>
               <MenuItem value={30}>Mensual</MenuItem>
               <MenuItem value={30}>Anual</MenuItem>
@@ -52,6 +67,7 @@ const Movements = () => {
 
           <TextField
             size="small"
+            onChange={onChangeSearch}
             placeholder="Busqueda por concepto"
             InputProps={{
               startAdornment: (
@@ -150,7 +166,7 @@ const Movements = () => {
         </div>
       </div>
 
-      <Tab />
+      <Tab textSearch={textSearch} filters={filters} onChangeSearch={onChangeSearch} />
     </div>
   );
 };

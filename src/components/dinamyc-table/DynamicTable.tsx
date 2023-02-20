@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { Table, TableContainer, TablePagination } from '@mui/material';
+import { Table, TableContainer, TablePagination } from "@mui/material";
 //import Spinner from '../spinner/Spinner';
-import { BodyTable } from './BodyTable';
-import { HeaderTable, TableConfigCells } from './HeaderTable';
+import { BodyTable } from "./BodyTable";
+import { HeaderTable, TableConfigCells } from "./HeaderTable";
 
 export interface DinamycTableProps {
   headerCells: TableConfigCells[];
-  data: any[];
+  data: [];
   orderField?: string;
-  orderBy?: 'asc' | 'desc';
+  orderBy?: "asc" | "desc";
   page?: number;
   rowsPerPage?: number;
   total?: number;
@@ -23,12 +23,12 @@ export const DynamicTable = (props: DinamycTableProps): JSX.Element => {
   const {
     headerCells,
     loading,
-    data,
+    data = [],
     orderField,
     rowsPerPage,
-    orderBy,
+    orderBy = "asc",
     page,
-    total = 10,
+    total = 9,
     onSortChange,
     onPageChange,
     onRowsPerPageChange,
@@ -42,37 +42,38 @@ export const DynamicTable = (props: DinamycTableProps): JSX.Element => {
 
   function rowsPerPageChange(event: React.ChangeEvent<HTMLInputElement>): void {
     if (onRowsPerPageChange !== undefined) {
-      onRowsPerPageChange(parseInt(event.target.value, 10));
+      onRowsPerPageChange(parseInt(event.target.value, 9));
     }
   }
 
   return (
     <>
-      <TableContainer className='w-full'>
+      <TableContainer className="w-full">
         <Table>
-          
           {/* Header table */}
           <HeaderTable
             headerCells={headerCells}
-            //      orderBy={orderBy}
-            //    orderField={orderField}
-            onSortChange={onSortChange} orderField={''} orderBy={'asc'}          />
+            orderBy={orderBy}
+            orderField={orderField}
+          />
 
           {/* Body table */}
-          {!(loading ?? false) ? <BodyTable data={data} headerCells={headerCells} /> : null}
+          {!(loading ?? false) ? (
+            <BodyTable data={data} headerCells={headerCells} />
+          ) : null}
         </Table>
         {/* {loading ?? false ? <Spinner /> : null} */}
       </TableContainer>
 
-      {/* <TablePagination
+      <TablePagination
         rowsPerPageOptions={[10, 25, 50]}
-        component='div'
+        component="div"
         count={total}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={changePage}
         onRowsPerPageChange={rowsPerPageChange}
-      /> */}
+      />
     </>
   );
 };

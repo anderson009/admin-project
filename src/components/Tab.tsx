@@ -5,12 +5,12 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Card } from "@mui/material";
 import { DynamicTable, TableConfigCells } from "./dinamyc-table";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getMovements } from "../store/slices/movements/Thunks";
 import { useAppDispatch, useAppSelector } from "../shared/hooks";
 import { headerCells } from "../pages/movements/utils/HeaderTable";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import PriceChangeIcon from "@mui/icons-material/PriceChange";
+import useTableTools from "../hooks/useTableTools";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,31 +45,59 @@ function a11yProps(index: number) {
   };
 }
 
-export default function BasicTabs() {
+interface TabPanelPro {
+  textSearch: string;
+  filters: any;
+  onChangeSearch: (value: any) => void;
+}
+
+export default function BasicTabs(props: TabPanelPro) {
   const [value, setValue] = React.useState(0);
   const [dataHeaders, setdataHeaders] = React.useState<TableConfigCells[]>([]);
 
-  const { movements, page, isLoading } = useAppSelector(
-    (state) => state.movements
-  );
+  const { textSearch, onChangeSearch, filters } = props;
 
-  console.log(movements, isLoading);
+  const {
+    onSortChange,
+    onPageChange,
+    onRowsPerPageChange,
+    orderField,
+    orderBy,
+    page,
+    rowsPerPage,
+    setPage,
+  } = useTableTools();
+
+  const filtrsData = {
+    textSearch,
+    page,
+    rowsPerPage,
+    orderField,
+    orderBy,
+    filters,
+  };
+
+  const { data, isLoading } = useAppSelector((state) => state.movements);
+
+  console.log(data);
+  
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-     setdataHeaders(headerCells(actionsTable));
+    setdataHeaders(headerCells(actionsTable));
   }, []);
-
-  const actionsTable = (): JSX.Element => {
-    return (
-      <TrendingUpIcon />
-    );
-  };
 
   useEffect(() => {
-    dispatch(getMovements());
-  }, []);
+    value === 0 ? (filters.type = "ventas") : null;
+    value === 0 ? dispatch(getMovements(filtrsData)) : null;
+    value === 1 ? (filters.type = "gastos") : null;
+    value === 1 ? dispatch(getMovements(filtrsData)) : null;
+  }, [textSearch, filters, value]);
+
+  const actionsTable = (row: any): JSX.Element => {
+    return <PriceChangeIcon color={row.type === 'ventas' ? 'success' :  'error'} />;
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -122,20 +150,34 @@ export default function BasicTabs() {
           <DynamicTable
             //  loading={loading}
             headerCells={dataHeaders}
-            data={movements}
-            // orderBy={orderBy}
-            //orderField={orderField}
+            data={data.data}
+            orderBy={orderBy}
+            orderField={orderField}
             page={page}
-            //total={totalUsers}
-            //rowsPerPage={rowsPerPage}
-            //onSortChange={onSortChange}
-            //onPageChange={onPageChange}
-            //onRowsPerPageChange={onRowsPerPageChange}
+            total={data.total}
+            rowsPerPage={rowsPerPage}
+            onSortChange={onSortChange}
+            onPageChange={onPageChange}
+            onRowsPerPageChange={onRowsPerPageChange}
           />
         </Card>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <Card className="w-full bg-white ">
+          <DynamicTable
+            //  loading={loading}
+            headerCells={dataHeaders}
+            data={data.data}
+            orderBy={orderBy}
+            orderField={orderField}
+            page={page}
+            total={data.total}
+            rowsPerPage={rowsPerPage}
+            onSortChange={onSortChange}
+            onPageChange={onPageChange}
+            onRowsPerPageChange={onRowsPerPageChange}
+          />
+        </Card>
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three

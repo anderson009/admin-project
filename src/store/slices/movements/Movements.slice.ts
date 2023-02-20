@@ -1,15 +1,14 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { movements } from "../../../models/Movements";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 interface MovementsSlice {
   page: number;
-  movements: movements[];
+  data: any;
   isLoading: boolean;
 }
 
 const initialState: MovementsSlice = {
   page: 0,
-  movements: [],
+  data: {},
   isLoading: false,
 };
 
@@ -24,7 +23,7 @@ export const movementsSlice = createSlice({
     setMovements: (state, action: PayloadAction<MovementsSlice>) => {
       state.isLoading = false;
       state.page = action.payload.page;
-      state.movements = action.payload.movements;
+      state.data = action.payload.data;
     },
   },
 });

@@ -2,10 +2,10 @@ import { TableConfigCells } from "../../../components/dinamyc-table";
 import { movements } from "../../../models/Movements";
 
 export const headerCells = (
-  actionsTable: () => JSX.Element
+  actionsTable: (actionsTable: (row: any) => JSX.Element) => JSX.Element
 ): TableConfigCells[] => {
   return [
-    { style: 1, id: 'acciones', title: '', value: actionsTable },
+    { style: 1, id: "acciones", title: "", value: actionsTable },
 
     {
       style: 900,
@@ -18,18 +18,21 @@ export const headerCells = (
     },
 
     {
+      style: 175,
       align: "right",
       id: "fecha",
       title: "Fecha y hora",
       value: (row: movements) => row.fecha,
     },
     {
+      style: 175,
       align: "right",
       id: "totals",
       title: "totals",
       value: (row: movements) => row.totals,
     },
     {
+      style: 175,
       align: "right",
       id: "metodoDePago",
       title: "Medio de Pago",
