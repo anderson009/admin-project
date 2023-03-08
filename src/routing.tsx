@@ -10,7 +10,9 @@ const Login = React.lazy(
 
 const Register = React.lazy(
   async () =>
-    await import("./pages/auth/register/Register").then((m) => ({ default: m.Register }))
+    await import("./pages/auth/register/Register").then((m) => ({
+      default: m.Register,
+    }))
 );
 const Layout = React.lazy(
   async () =>
@@ -29,6 +31,13 @@ const Movements = React.lazy(
   async () =>
     await import("./pages/movements/Movements").then((m) => ({
       default: m.Movements,
+    }))
+);
+
+const Sales = React.lazy(
+  async () =>
+    await import("./pages/createMovement/Sales").then((m) => ({
+      default: m.Sales,
     }))
 );
 
@@ -195,9 +204,16 @@ const RouterApps = (): JSX.Element => {
               <Movements />
             </React.Suspense>
           }
-        >
-         
-        </Route>
+        ></Route>
+
+        <Route
+          path="createSales"
+          element={
+            <React.Suspense fallback={<></>}>
+              <Sales />
+            </React.Suspense>
+          }
+        ></Route>
 
         {/* <Route
           path="characters"

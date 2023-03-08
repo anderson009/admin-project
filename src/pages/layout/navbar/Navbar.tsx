@@ -70,10 +70,13 @@ const Navbar = (props: Props): JSX.Element => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const { pathname } = useLocation();
+  
 
   const handleDrawerToggle = (): void => {
     setMobileOpen(!mobileOpen);
   };
+
+  const navigate = useNavigate()
 
   const drawer = useMemo(
     () => (
@@ -142,14 +145,14 @@ const Navbar = (props: Props): JSX.Element => {
                 disablePadding
                 className={`!px-4 hover:bg-slate-200`}
               >
-                <ButtonMenu  disableRipple>
+                <ButtonMenu disableRipple>
                   <ListItemIcon>
                     {index === 0 ? (
                       <LoginIcon className=" !text-red-600" />
                     ) : null}
                   </ListItemIcon>
 
-                  <p className="capitalize text-2xl !text-red-600"  >{text} </p>
+                  <p className="capitalize text-2xl !text-red-600">{text} </p>
                 </ButtonMenu>
               </ListItem>
             </Link>
@@ -191,24 +194,29 @@ const Navbar = (props: Props): JSX.Element => {
           >
             {pathname.slice(7)}
           </Typography>
-          <Button
-            startIcon={<AddCircleIcon />}
-            className="!mr-4"
-            size="large"
-            variant="contained"
-            color="success"
-          >
-            Nueva Venta
-          </Button>
+          {pathname === "/admin/movements" ? (
+            <>
+              <Button
+                onClick={() => navigate('createSales')}
+                startIcon={<AddCircleIcon />}
+                className="!mr-4"
+                size="large"
+                variant="contained"
+                color="success"
+              >
+                Nueva Venta
+              </Button>
 
-          <Button
-            startIcon={<RemoveCircleOutlineIcon />}
-            size="large"
-            variant="contained"
-            color="error"
-          >
-            Nuevo gasto
-          </Button>
+              <Button
+                startIcon={<RemoveCircleOutlineIcon />}
+                size="large"
+                variant="contained"
+                color="error"
+              >
+                Nuevo gasto
+              </Button>
+            </>
+          ) : null}
         </Toolbar>
         <div>
           <hr className=" h-2  bg-green-600" />
