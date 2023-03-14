@@ -172,7 +172,8 @@ const Navbar = (props: Props): JSX.Element => {
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+         ml: { sm: `${drawerWidth}px` },
+         zIndex: (theme) => theme.zIndex.drawer + 2
         }}
       >
         <Toolbar className="bg-white">
