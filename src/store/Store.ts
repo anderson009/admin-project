@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import Movements from "./slices/movements/Movements.slice";
+import Products from "./slices/products/Products.slice";
 // import { todosApi } from "./apis/TodoApi";
 // import { counterSlice } from "./slices/counter";
 // import { pokemonSlice } from "./slices/pokemon";
@@ -7,6 +8,7 @@ import Movements from "./slices/movements/Movements.slice";
 export const store = configureStore({
   reducer: {
     movements: Movements,
+    products: Products,
     // pokemons: pokemonSlice.reducer,
     // [todosApi.reducerPath]: todosApi.reducer,
   },

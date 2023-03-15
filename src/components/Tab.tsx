@@ -78,8 +78,6 @@ export default function BasicTabs(props: TabPanelPro) {
   };
 
   const { data, isLoading } = useAppSelector((state) => state.movements);
-
-  console.log(data);
   
 
   const dispatch = useAppDispatch();
@@ -89,9 +87,9 @@ export default function BasicTabs(props: TabPanelPro) {
   }, []);
 
   useEffect(() => {
-    value === 0 ? (filters.type = "ventas") : null;
+    value === 0 ? (filters.type === "ventas") : null;
     value === 0 ? dispatch(getMovements(filtrsData)) : null;
-    value === 1 ? (filters.type = "gastos") : null;
+    value === 1 ? (filters.type === "gastos") : null;
     value === 1 ? dispatch(getMovements(filtrsData)) : null;
   }, [textSearch, filters, value]);
 

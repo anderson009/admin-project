@@ -15,7 +15,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Card } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
 import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import styled from "@emotion/styled";
