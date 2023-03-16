@@ -15,7 +15,7 @@ const drawerStyle = {
 };
 
 interface Props {
-  data: []
+  data: any[]
 }
 
 const Canasta = (props: Props): JSX.Element => {
@@ -61,10 +61,10 @@ const Canasta = (props: Props): JSX.Element => {
               </div>
               <Button
                 // onClick={() => navigate('createSales')}
-                className="!py-3 !bg-amber-400 !font-bold !text-black"
+                className={`!py-3 ${data.length <= 0 ? 'bg-amber-100 !text-gray-500   ' : '!bg-amber-400'} !font-bold !text-black`}
                 size="large"
                 variant="contained"
-                disabled={data.length === 0}
+                disabled={data.length <= 0}
               >
                 Confirmar productos
               </Button>
