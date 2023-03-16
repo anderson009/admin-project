@@ -14,7 +14,12 @@ const drawerStyle = {
   },
 };
 
-const Canasta = (): JSX.Element => {
+interface Props {
+  data: []
+}
+
+const Canasta = (props: Props): JSX.Element => {
+  const { data = [] } = props;
   return (
     <Box sx={{ display: "flex" }} className="nav-bar-root">
       <Box
@@ -42,7 +47,9 @@ const Canasta = (): JSX.Element => {
             <Divider />
 
             <div className="grow flex flexcol justify-center mt-20">
-              No hay nada
+             {!data ? 'No hay nada' : data.map((el: any) =>(
+              <h1>{el.name}</h1>
+             ))}
             </div>
 
             <Divider />
@@ -57,7 +64,7 @@ const Canasta = (): JSX.Element => {
                 className="!py-3 !bg-amber-400 !font-bold !text-black"
                 size="large"
                 variant="contained"
-                // color="warning"
+                disabled={data.length === 0}
               >
                 Confirmar productos
               </Button>
