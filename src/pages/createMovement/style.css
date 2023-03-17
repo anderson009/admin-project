@@ -1,0 +1,35 @@
+.bvRDGf {
+    height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    border-left: 0.5px solid rgb(199, 204, 209);
+}
+
+.a {
+    box-shadow: rgb(34 38 42 / 5%) 0.125rem -0.25rem 0.5rem;
+}
+
+.iudHkp {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 200px);
+}
+
+.hNbxXQ {
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 0px 32px 20px;
+}
+
+tyle {
+    box-sizing: border-box;
+    direction: ltr;
+    height: 674px;
+    position: relative;
+    width: 642px;
+    will-change: transform;
+    overflow: hidden;
+}
