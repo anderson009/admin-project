@@ -46,7 +46,7 @@ const Movements = () => {
   });
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col mx-14 mt-[100px]">
       <div className="flex flex-row justify-between w-full">
         <div className="flex flex-row">
           <FormControl sx={{ minWidth: 220, marginRight: 3 }} size="small">

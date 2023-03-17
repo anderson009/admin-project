@@ -26,6 +26,8 @@ export const getMovements = (filters?: any, page = 0) => {
         obj.filter = filters?.filters;
       }
       const response = await MovementsService.getMovements(obj);
+      console.log(response);
+      
 
       dispatch(
         setMovements({
