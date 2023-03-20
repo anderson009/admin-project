@@ -9,8 +9,14 @@ async function getProducts(params?: Record<string, string>): Promise<ResponsePag
   return result.data;
 }
 
+async function getNewProducts(id: any, data: any): Promise<any> {
+  const result = await HttpClient.put(`api/products/cant/${id}`, data);
+  return result.data;
+}
+
 const ProductsService = {
-    getProducts
+    getProducts,
+    getNewProducts
 };
 
 export { ProductsService };

@@ -27,7 +27,34 @@ export const getProducts = (filters?: any, page = 0) => {
       // }
       const response = await ProductsService.getProducts(obj);
       console.log(response);
-      
+
+      dispatch(
+        setProducts({
+          data: response,
+          page: page + 1,
+          isLoading: false,
+        })
+      );
+    } catch (error: any) {
+      console.log(error);
+      const { response } = error;
+      if (response.status === 401) {
+        //  return setOpen(true);
+      } else {
+        // eslint-disable-next-line no-useless-return
+        return;
+      }
+    }
+  };
+};
+
+export const getNewProducts = (id: any, obj: any, page = 0) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      await ProductsService.getNewProducts(id, obj);
+
+      const response = await ProductsService.getProducts();
+
       dispatch(
         setProducts({
           data: response,

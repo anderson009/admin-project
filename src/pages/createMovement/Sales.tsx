@@ -12,7 +12,10 @@ import Navbar from "../../components/drawer";
 //import PermanentDrawerRight from "../layout/PermanentDrawerRight/Navbar";
 import SearchIcon from "@mui/icons-material/Search";
 import { useAppDispatch, useAppSelector } from "../../shared/hooks";
-import { getProducts } from "../../store/slices/products/Thunks";
+import {
+  getProducts,
+  getNewProducts,
+} from "../../store/slices/products/Thunks";
 import Box from "@mui/material/Box";
 import OutlinedCard from "../../components/card";
 import "./style.css";
@@ -24,6 +27,7 @@ const Sales = (): JSX.Element => {
   const [cantidad, setCantidad] = useState<number>(1);
   const { data, isLoading } = useAppSelector((state) => state.products);
   const [total, setTotal] = useState<number>(0);
+  
 
   const dispatch = useAppDispatch();
 
@@ -57,7 +61,8 @@ const Sales = (): JSX.Element => {
       cantidad,
       total: cantidad * precioUnitario,
     };
-
+    let g = { cantidad: cantidad };
+    dispatch(getNewProducts(_id, g));
     agregarCarrito(prroductoSeleccionado);
   };
 
@@ -78,6 +83,7 @@ const Sales = (): JSX.Element => {
   };
 
   useEffect(() => {
+    console.log(data);
     let totalVentas = carrito.reduce(
       (acumulador: any, actual: any) => acumulador + actual.total,
       0
@@ -91,7 +97,7 @@ const Sales = (): JSX.Element => {
 
   const confirmarSales = () => {
     let concept = carrito.map((el: any) => {
-      return el.name
+      return el.name;
     });
     let obj = {
       type: "sales",
@@ -101,9 +107,9 @@ const Sales = (): JSX.Element => {
         return {
           id: el.id,
           cantidad: el.cantidad,
-        }
-      } ) ,
-      concepto: concept.toString()
+        };
+      }),
+      concepto: concept.toString(),
     };
     console.log(obj);
   };
@@ -146,7 +152,7 @@ const Sales = (): JSX.Element => {
           <div className="hNbxXQ">
             <div className="tyle">
               <div className="grid grid-cols-4 mb-10 w-full my-8 gap-7">
-                {data.data.map((el: any) => (
+              {data.data.map((el: any) => (
                   <OutlinedCard
                     el={el}
                     func={agregateProduct}
@@ -208,8 +214,13 @@ const Sales = (): JSX.Element => {
                     <div className=" flex border w-full p-2 justify-between">
                       <span
                         onClick={() => {
-                          console.log(el);
-                          console.log(carrito);
+                          setCantidad(cantidad + 1);
+                          actualizarCantidad({
+                            ...el,
+                            cantidad: el.cantidad - 1,
+                            cantidadDisp: el.cantidadDisp + 1,
+                            id: el.id,
+                          });
                         }}
                         className="border rounded-xl font-bold px-1 hover:bg-slate-100 cursor-pointer"
                       >
@@ -218,17 +229,18 @@ const Sales = (): JSX.Element => {
 
                       <input
                         onChange={(e) => {
-                         // setCantidad(parseInt(e.target.value));
+                          // setCantidad(parseInt(e.target.value));
                           actualizarCantidad({
                             ...el,
                             cantidad: parseInt(e.target.value),
                             cantidadDisp:
-                              el.cantidadDisp - Number(parseInt(e.target.value) - 1),
+                              el.cantidadDisp -
+                              Number(parseInt(e.target.value) - 1),
                             id: el.id,
                           });
                         }}
                         className="w-14 flex text-center"
-                        type="text"
+                        type="number"
                         value={el.cantidad}
                       />
 
