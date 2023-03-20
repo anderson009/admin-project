@@ -90,12 +90,20 @@ const Sales = (): JSX.Element => {
   };
 
   const confirmarSales = () => {
+    let concept = carrito.map((el: any) => {
+      return el.name
+    });
     let obj = {
       type: "sales",
       categoria: "sales",
       totals: total,
-      products: carrito,
-      concepto: "lslls",
+      products: carrito.map((el: any) => {
+        return {
+          id: el.id,
+          cantidad: el.cantidad,
+        }
+      } ) ,
+      concepto: concept.toString()
     };
     console.log(obj);
   };
