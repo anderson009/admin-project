@@ -17,10 +17,11 @@ import Box from "@mui/material/Box";
 import OutlinedCard from "../../components/card";
 import "./style.css";
 import { Button } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Sales = (): JSX.Element => {
   const [carrito, setCarrito] = useState<any[]>([]);
+  const [cantidad, setCantidad] = useState<number>(1);
   const { data, isLoading } = useAppSelector((state) => state.products);
   const [total, setTotal] = useState<number>(0);
 
@@ -31,7 +32,7 @@ const Sales = (): JSX.Element => {
   }, []);
 
   const agregarCarrito = (producto: any) => {
-    if (carrito.some((articulo: any) => articulo.id === producto.id)) {
+    if (carrito.find((articulo: any) => articulo.id === producto.id)) {
       const carritoActualizado = carrito.map((articulo: any) => {
         if (articulo.id === producto.id) {
           articulo.cantidad === producto.cantidad;
@@ -51,16 +52,52 @@ const Sales = (): JSX.Element => {
     const prroductoSeleccionado = {
       id: _id,
       name,
-      cantidadDisp,
+      cantidadDisp: cantidadDisp - cantidad,
       precioUnitario,
-      // cantidad,
+      cantidad,
+      total: cantidad * precioUnitario,
     };
 
     agregarCarrito(prroductoSeleccionado);
-   
-    let totalVentas = carrito.reduce((acumulador: any, actual: any) => acumulador + actual.precioUnitario, 0);
+  };
+
+  const actualizarCantidad = (producto: any) => {
+    const carritoActualizado = carrito.map((articulo) => {
+      if (articulo.id === producto.id) {
+        articulo.cantidad = producto.cantidad;
+        articulo.cantidadDisp = producto.cantidadDisp;
+        articulo.total = producto.precioUnitario * producto.cantidad;
+
+        console.log(articulo.cantidadDisp);
+        console.log(producto.cantidadDisp);
+        console.log(producto);
+      }
+      return articulo;
+    });
+    setCarrito(carritoActualizado);
+  };
+
+  useEffect(() => {
+    let totalVentas = carrito.reduce(
+      (acumulador: any, actual: any) => acumulador + actual.total,
+      0
+    );
     setTotal(totalVentas);
-    
+  }, [carrito]);
+
+  const fun = () => {
+    console.log(carrito);
+  };
+
+  const confirmarSales = () => {
+    let obj = {
+      type: "sales",
+      categoria: "sales",
+      totals: total,
+      products: carrito,
+      concepto: "lslls",
+    };
+    console.log(obj);
   };
 
   return (
@@ -111,6 +148,7 @@ const Sales = (): JSX.Element => {
                   />
                 ))}
               </div>
+              <button onClick={() => fun()}>dddddddddddddd</button>
             </div>
           </div>
         </div>
@@ -119,7 +157,14 @@ const Sales = (): JSX.Element => {
       <section className=" mt-[70px] w-[30%] bvRDGf ">
         <div className="flex flex-row justify-between my-6 px-5 border-b pb-3 ">
           <p className=" text-2xl font-bold">Canasta</p>
-          <Button onClick={() => setCarrito([])} disabled={carrito.length <= 0} className="!underline !font-bold">
+          <Button
+            onClick={() => {
+              setCarrito([]);
+              setCantidad(1);
+            }}
+            disabled={carrito.length <= 0}
+            className="!underline !font-bold"
+          >
             Vaciar Canasta
           </Button>
         </div>
@@ -153,21 +198,51 @@ const Sales = (): JSX.Element => {
                   </div>
                   <div className="flex flex-col w-36  items-center mt-4">
                     <div className=" flex border w-full p-2 justify-between">
-                      <span className="border rounded-xl font-bold px-1 hover:bg-slate-100 cursor-pointer">
+                      <span
+                        onClick={() => {
+                          console.log(el);
+                          console.log(carrito);
+                        }}
+                        className="border rounded-xl font-bold px-1 hover:bg-slate-100 cursor-pointer"
+                      >
                         -
                       </span>
 
                       <input
+                        onChange={(e) => {
+                         // setCantidad(parseInt(e.target.value));
+                          actualizarCantidad({
+                            ...el,
+                            cantidad: parseInt(e.target.value),
+                            cantidadDisp:
+                              el.cantidadDisp - Number(parseInt(e.target.value) - 1),
+                            id: el.id,
+                          });
+                        }}
                         className="w-14 flex text-center"
                         type="text"
-                        value={5}
+                        value={el.cantidad}
                       />
 
-                      <span className="border rounded-xl px-1 font-bold hover:bg-slate-100 cursor-pointer">
+                      <span
+                        onClick={() => {
+                          setCantidad(cantidad + 1);
+                          actualizarCantidad({
+                            ...el,
+                            cantidad: el.cantidad + 1,
+                            cantidadDisp: el.cantidadDisp - 1,
+                            id: el.id,
+                          });
+                        }}
+                        className="border rounded-xl px-1 font-bold hover:bg-slate-100 cursor-pointer"
+                      >
                         +
                       </span>
                     </div>
-                    <p className="mt-2">Total</p>
+                    <p className="mt-2 font-bold">
+                      {" "}
+                      = {el.precioUnitario * el.cantidad}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -180,7 +255,7 @@ const Sales = (): JSX.Element => {
             <p className=" text-xl font-bold">$ {total}</p>
           </div>
           <Button
-            // onClick={() => navigate('createSales')}
+            onClick={() => confirmarSales()}
             className={`!py-3  !mx-5 ${
               carrito.length <= 0
                 ? "bg-amber-100 !text-gray-500   "
