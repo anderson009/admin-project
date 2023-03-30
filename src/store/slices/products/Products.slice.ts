@@ -2,13 +2,24 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 interface ProductsSlice {
   page: number;
-  data: any;
+  data: Products;
   isLoading: boolean;
 }
 
+interface Products {
+  data: [];
+  total?: number;
+  page?: any;
+  limit?: number;
+}
 const initialState: ProductsSlice = {
   page: 0,
-  data: {},
+  data: {
+    data: [],
+    total: 0,
+    page: 0,
+    limit: 0,
+  },
   isLoading: false,
 };
 

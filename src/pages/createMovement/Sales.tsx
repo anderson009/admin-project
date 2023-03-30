@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "../../shared/hooks";
 import {
   getProducts,
   getNewProducts,
+  g,
 } from "../../store/slices/products/Thunks";
 import Box from "@mui/material/Box";
 import OutlinedCard from "../../components/card";
@@ -27,7 +28,6 @@ const Sales = (): JSX.Element => {
   const [cantidad, setCantidad] = useState<number>(1);
   const { data, isLoading } = useAppSelector((state) => state.products);
   const [total, setTotal] = useState<number>(0);
-  
 
   const dispatch = useAppDispatch();
 
@@ -61,9 +61,9 @@ const Sales = (): JSX.Element => {
       cantidad,
       total: cantidad * precioUnitario,
     };
-    let g = { cantidad: cantidad };
-    dispatch(getNewProducts(_id, g));
     agregarCarrito(prroductoSeleccionado);
+
+    dispatch(g(data.data, _id, cantidad))
   };
 
   const actualizarCantidad = (producto: any) => {
@@ -72,18 +72,14 @@ const Sales = (): JSX.Element => {
         articulo.cantidad = producto.cantidad;
         articulo.cantidadDisp = producto.cantidadDisp;
         articulo.total = producto.precioUnitario * producto.cantidad;
-
-        console.log(articulo.cantidadDisp);
-        console.log(producto.cantidadDisp);
-        console.log(producto);
       }
       return articulo;
     });
+    console.log(data.data);
     setCarrito(carritoActualizado);
   };
 
   useEffect(() => {
-    console.log(data);
     let totalVentas = carrito.reduce(
       (acumulador: any, actual: any) => acumulador + actual.total,
       0
@@ -91,9 +87,10 @@ const Sales = (): JSX.Element => {
     setTotal(totalVentas);
   }, [carrito]);
 
-  const fun = () => {
-    console.log(carrito);
-  };
+  // const fun = () => {
+  // //  console.log(carrito);
+  //   t()
+  // };
 
   const confirmarSales = () => {
     let concept = carrito.map((el: any) => {
@@ -114,6 +111,11 @@ const Sales = (): JSX.Element => {
     console.log(obj);
   };
 
+  // const t = () => {
+  //   dispatch(g(data.data, ))
+    
+  //   //return dat;
+  // }
   return (
     <div className="flex ">
       <section className=" mx-14 mt-[100px] w-[70%]">
@@ -152,8 +154,9 @@ const Sales = (): JSX.Element => {
           <div className="hNbxXQ">
             <div className="tyle">
               <div className="grid grid-cols-4 mb-10 w-full my-8 gap-7">
-              {data.data.map((el: any) => (
+                {data.data.map((el: any) => (                
                   <OutlinedCard
+                    key={el.id}
                     el={el}
                     func={agregateProduct}
                     price={el.precioUnitario}
@@ -162,7 +165,7 @@ const Sales = (): JSX.Element => {
                   />
                 ))}
               </div>
-              <button onClick={() => fun()}>dddddddddddddd</button>
+              {/* <button onClick={() => fun()}>dddddddddddddd</button> */}
             </div>
           </div>
         </div>

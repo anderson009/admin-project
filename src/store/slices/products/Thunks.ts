@@ -74,3 +74,24 @@ export const getNewProducts = (id: any, obj: any, page = 0) => {
     }
   };
 };
+
+export const g = (data: any[], el: any, cantidad: number, page = 0) => {
+  return (dispatch: Dispatch) => {
+    const dat: any = data.map((d: any) => {
+      if (el === d._id) {
+        return { ...d, cantidadDisp: d.cantidadDisp - cantidad };
+      }
+      return d
+    });
+    console.log(dat);
+    dispatch(
+      setProducts({
+        data: {
+          data: dat,
+        },
+        page: page + 1,
+        isLoading: false,
+      })
+    );
+  };
+};
