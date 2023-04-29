@@ -81,9 +81,28 @@ export const g = (data: any[], el: any, cantidad: number, page = 0) => {
       if (el === d._id) {
         return { ...d, cantidadDisp: d.cantidadDisp - cantidad };
       }
-      return d
+      return d;
     });
-    console.log(dat);
+    dispatch(
+      setProducts({
+        data: {
+          data: dat,
+        },
+        page: page + 1,
+        isLoading: false,
+      })
+    );
+  };
+};
+
+export const t = (data: any[], el: any, cantidad: number, page = 0) => {
+  return (dispatch: Dispatch) => {
+    const dat: any = data.map((d: any) => {
+      if (el === d._id) {
+        return { ...d, cantidadDisp: d.cantidadDisp + cantidad };
+      }
+      return d;
+    });
     dispatch(
       setProducts({
         data: {

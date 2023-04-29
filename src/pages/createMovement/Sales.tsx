@@ -16,6 +16,7 @@ import {
   getProducts,
   getNewProducts,
   g,
+  t,
 } from "../../store/slices/products/Thunks";
 import Box from "@mui/material/Box";
 import OutlinedCard from "../../components/card";
@@ -26,8 +27,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const Sales = (): JSX.Element => {
   const [carrito, setCarrito] = useState<any[]>([]);
   const [cantidad, setCantidad] = useState<number>(1);
+  const [count, setCount] = useState<number>(1);
   const { data, isLoading } = useAppSelector((state) => state.products);
   const [total, setTotal] = useState<number>(0);
+  const [operation, setOperation] = useState<boolean>(true);
 
   const dispatch = useAppDispatch();
 
@@ -63,7 +66,8 @@ const Sales = (): JSX.Element => {
     };
     agregarCarrito(prroductoSeleccionado);
 
-    dispatch(g(data.data, _id, cantidad))
+    dispatch(g(data.data, _id, count));
+    
   };
 
   const actualizarCantidad = (producto: any) => {
@@ -75,8 +79,24 @@ const Sales = (): JSX.Element => {
       }
       return articulo;
     });
-    console.log(data.data);
+
     setCarrito(carritoActualizado);
+    dispatch(g(data.data, producto.id, count));
+  };
+
+  const restCant = (producto: any) => {
+    const carritoActualizado = carrito.map((articulo) => {
+      if (articulo.id === producto.id) {
+        articulo.cantidad = producto.cantidad;
+        articulo.cantidadDisp = producto.cantidadDisp;
+        articulo.total = producto.precioUnitario * producto.cantidad;
+      }
+      return articulo;
+    });
+
+    setCarrito(carritoActualizado);
+    setCount(+1);
+    dispatch(t(data.data, producto.id, count));
   };
 
   useEffect(() => {
@@ -86,11 +106,6 @@ const Sales = (): JSX.Element => {
     );
     setTotal(totalVentas);
   }, [carrito]);
-
-  // const fun = () => {
-  // //  console.log(carrito);
-  //   t()
-  // };
 
   const confirmarSales = () => {
     let concept = carrito.map((el: any) => {
@@ -111,11 +126,6 @@ const Sales = (): JSX.Element => {
     console.log(obj);
   };
 
-  // const t = () => {
-  //   dispatch(g(data.data, ))
-    
-  //   //return dat;
-  // }
   return (
     <div className="flex ">
       <section className=" mx-14 mt-[100px] w-[70%]">
@@ -154,7 +164,7 @@ const Sales = (): JSX.Element => {
           <div className="hNbxXQ">
             <div className="tyle">
               <div className="grid grid-cols-4 mb-10 w-full my-8 gap-7">
-                {data.data.map((el: any) => (                
+                {data.data.map((el: any) => (
                   <OutlinedCard
                     key={el.id}
                     el={el}
@@ -217,8 +227,8 @@ const Sales = (): JSX.Element => {
                     <div className=" flex border w-full p-2 justify-between">
                       <span
                         onClick={() => {
-                          setCantidad(cantidad + 1);
-                          actualizarCantidad({
+                          //  setCantidad(cantidad - 1);
+                          restCant({
                             ...el,
                             cantidad: el.cantidad - 1,
                             cantidadDisp: el.cantidadDisp + 1,
@@ -232,7 +242,7 @@ const Sales = (): JSX.Element => {
 
                       <input
                         onChange={(e) => {
-                          // setCantidad(parseInt(e.target.value));
+                          //  setCantidad(parseInt(e.target.value));
                           actualizarCantidad({
                             ...el,
                             cantidad: parseInt(e.target.value),
@@ -249,7 +259,8 @@ const Sales = (): JSX.Element => {
 
                       <span
                         onClick={() => {
-                          setCantidad(cantidad + 1);
+                          //   setCantidad(+1);
+                          setCount(+1);
                           actualizarCantidad({
                             ...el,
                             cantidad: el.cantidad + 1,
